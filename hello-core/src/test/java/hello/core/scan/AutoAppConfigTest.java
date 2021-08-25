@@ -19,6 +19,7 @@ class AutoAppConfigTest {
         MemberService memberService = ac.getBean(MemberService.class);
         assertThat(memberService).isInstanceOf(MemberService.class);
 
-        //ConflictingBeanDefinitionException 예외 발생
+        // 이 경우는 수동 빈이 자동 빈을 오버라이딩 해버린다.
+        // Overriding bean definition for bean 'memoryMemberRepository' with a different definition: replacing
     }
 }
