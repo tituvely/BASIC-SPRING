@@ -19,7 +19,6 @@ class AutoAppConfigTest {
         MemberService memberService = ac.getBean(MemberService.class);
         assertThat(memberService).isInstanceOf(MemberService.class);
 
-        // @Autowired는 타입으로 조회하기 떄문에, 선택된 빈이 2개 이상이면 NoUniqueBeanDefinitionException이 발생
-        // expected single matching bean but found 2: fixDiscountPolicy,rateDiscountPolicy
+        // @Autowired는 타입 매칭을 시도하고, 조회된 빈이 2개 이상이면 필드 이름, 파라미터 이름으로 빈 이름을 추가 매칭한다
     }
 }
