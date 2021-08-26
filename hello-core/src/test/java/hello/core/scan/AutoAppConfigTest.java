@@ -19,7 +19,7 @@ class AutoAppConfigTest {
         MemberService memberService = ac.getBean(MemberService.class);
         assertThat(memberService).isInstanceOf(MemberService.class);
 
-        // 이 경우는 수동 빈이 자동 빈을 오버라이딩 해버린다.
-        // Overriding bean definition for bean 'memoryMemberRepository' with a different definition: replacing
+        // @Autowired는 타입으로 조회하기 떄문에, 선택된 빈이 2개 이상이면 NoUniqueBeanDefinitionException이 발생
+        // expected single matching bean but found 2: fixDiscountPolicy,rateDiscountPolicy
     }
 }
