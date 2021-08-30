@@ -21,11 +21,22 @@ public class JpaMain {
             Member member = new Member();
             member.setUsername("A");
 
+            Member member2 = new Member();
+            member2.setUsername("B");
+
+            Member member3 = new Member();
+            member3.setUsername("C");
+
             System.out.println("==================================");
-            em.persist(member);     // IDENTITY 전략은 em.persist() 시점에 즉시 INSERT SQL 실행하고 DB에서 식별자를 조회
+            em.persist(member);
+            em.persist(member2);
+            em.persist(member3);
+
             System.out.println("member.getId() = " + member.getId());
+            System.out.println("member2.getId() = " + member2.getId());
+            System.out.println("member3.getId() = " + member3.getId());
             System.out.println("==================================");
-            tx.commit();            // JPA는 보통 트랜잭션 커밋 시점에 INSERT SQL 실행
+            tx.commit();
         } catch (Exception e) {
             tx.rollback();
         } finally {
