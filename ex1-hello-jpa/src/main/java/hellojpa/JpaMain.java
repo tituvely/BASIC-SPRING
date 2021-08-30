@@ -19,15 +19,14 @@ public class JpaMain {
 
         try {
             // 영속
-            Member member1 = new Member(3L, "C");
-            Member member2 = new Member(4L, "D");
-
-            em.persist(member1);
-            em.persist(member2);
+            Member member = em.find(Member.class, 1L);
+            member.setName("A");
 
             System.out.println("=========================");
+            // 변경 감지(더티 체킹 - Dirty Checking)
+            // update나 save같은 메소드를 실행하지 않았는데 자동으로 update 쿼리가 날려진다.
 
-            // 커밋하는 순간 데이터베이스에 INSERT SQL을 보낸다.
+            // 영속성 컨텍스트에서는 엔티티와 스냅샷을 비교해서, 값이 다르면 UPDATE SQL을 생성한다.
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
