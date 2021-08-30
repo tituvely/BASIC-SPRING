@@ -18,21 +18,16 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Member member = new Member();
-            member.setName("memberA");
-            member.setId(1L);
+            // 영속
+            Member member1 = new Member(3L, "C");
+            Member member2 = new Member(4L, "D");
 
-            // 회원 등록
-            em.persist(member);
+            em.persist(member1);
+            em.persist(member2);
 
-            // 회원 조회
-            Member findMember = em.find(Member.class, 1L);
-            System.out.println("findMember.getId() = " + findMember.getId());
-            System.out.println("findMember.getName() = " + findMember.getName());
+            System.out.println("=========================");
 
-            // 회원 수정
-            findMember.setName("HelloJPA");
-
+            // 커밋하는 순간 데이터베이스에 INSERT SQL을 보낸다.
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
