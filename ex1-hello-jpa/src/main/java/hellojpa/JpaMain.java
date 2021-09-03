@@ -33,21 +33,11 @@ public class JpaMain {
             em.flush(); //쿼리 날리기
             em.clear(); //영속성 컨텍스트 초기화
 
-            //조회 
-            Member findMember = em.find(Member.class, member.getId());
-            /* 참조를 사용해서 연관관계 조회 */
-            Team findTeam = findMember.getTeam();
-            System.out.println("findTeam = " + findTeam.getName());
+            Team findTeam = em.find(Team.class, team.getId());
 
-            /* 연관관계 수정 */
-            //새로운 팀B 
-            Team teamB = new Team();
-            teamB.setName("TeamB");
-            em.persist(teamB);
+            int memberSize = findTeam.getMembers().size();
 
-            //회원1에 새로운 팀B 설정 
-            member.setTeam(teamB);
-            System.out.println("findTeam = " + member.getTeam().getName());
+            System.out.println(memberSize);
 
             tx.commit();
         } catch (Exception e) {
