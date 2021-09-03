@@ -13,7 +13,8 @@ public class Team {
 
     private String name;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany
+    @JoinColumn(name = "TEAM_ID")   //안 쓰면 조인 테이블이 하나 생김
     private List<Member> members = new ArrayList<Member>();
 
     public Long getId() {
@@ -40,12 +41,4 @@ public class Team {
         this.members = members;
     }
 
-    @Override
-    public String toString() {
-        return "Team{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", members=" + members +
-                '}';
-    }
 }

@@ -26,18 +26,11 @@ public class JpaMain {
 
             Team team = new Team();
             team.setName("TeamA");
+            // update쿼리가 나감
+            // 실제로 update 되는 것은 MEMBER TABLE
+            team.getMembers().add(member);
+
             em.persist(team);
-
-            //연관관계의 주인에 값 설정
-            member.changeTeam(team);
-
-            em.flush();
-            em.clear();
-
-            Team findTeam = em.find(Team.class, team.getId());
-            List<Member> members = findTeam.getMembers();
-
-            System.out.println("findTeam = " + findTeam);
 
             tx.commit();
         } catch (Exception e) {
