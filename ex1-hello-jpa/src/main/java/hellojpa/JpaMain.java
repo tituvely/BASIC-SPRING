@@ -18,23 +18,36 @@ public class JpaMain {
         tx.begin();
 
         try {
+            /* 연관관계 저장 */
             Team team = new Team();
             team.setName("TeamA");
             em.persist(team);
 
             Member member = new Member();
             member.setName("member1");
-            member.setTeamId(team.getId()); // 외래 키 식별자를 직접 다룸
+            member.setTeam(team);
             em.persist(member);
+
+            //쿼리를 확인하고 싶다면 영속성 컨텍스트를 초기화해줘야 한다.
+            //그렇지 않으면 1차 캐시에서 가져옴.
+            em.flush(); //쿼리 날리기
+            em.clear(); //영속성 컨텍스트 초기화
 
             //조회 
             Member findMember = em.find(Member.class, member.getId());
-            Long findTeamId = findMember.getTeamId();
-            Team findTeam = em.find(Team.class, findTeamId);
-            //식별자로 다시 조회, 객체 지향적인 방법은 아니다.
-            //객체를 테이블에 맞추어 데이터 중심으로 모델링하면, 협력 관계를 만들 수 없다.
-            //테이블은 외래 키로 조인을 사용해서 연관된 테이블을 찾는다.
-            //테이블과 객체 사이에는 이런 큰 간격이 있다.
+            /* 참조를 사용해서 연관관계 조회 */
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam = " + findTeam.getName());
+
+            /* 연관관계 수정 */
+            //새로운 팀B 
+            Team teamB = new Team();
+            teamB.setName("TeamB");
+            em.persist(teamB);
+
+            //회원1에 새로운 팀B 설정 
+            member.setTeam(teamB);
+            System.out.println("findTeam = " + member.getTeam().getName());
 
             tx.commit();
         } catch (Exception e) {
