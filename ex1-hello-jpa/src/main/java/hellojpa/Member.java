@@ -43,4 +43,13 @@ public class Member {
         //연관관계 편의 메소드를 생성
         team.getMembers().add(this);
     }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", team=" + team +
+                '}';
+    }
 }
