@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JpaMain {
 
@@ -18,26 +19,26 @@ public class JpaMain {
         tx.begin();
 
         try {
-            /* 연관관계 저장 */
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
+            //저장
             Member member = new Member();
             member.setName("member1");
-            member.setTeam(team);
             em.persist(member);
 
-            //쿼리를 확인하고 싶다면 영속성 컨텍스트를 초기화해줘야 한다.
-            //그렇지 않으면 1차 캐시에서 가져옴.
-            em.flush(); //쿼리 날리기
-            em.clear(); //영속성 컨텍스트 초기화
+            Team team = new Team();
+            team.setName("TeamA");
+            //역방향(주인이 아닌 방향)만 연관관계 설정 
+            team.getMembers().add(member);
+            em.persist(team);
+
+            em.flush();
+            em.clear();
 
             Team findTeam = em.find(Team.class, team.getId());
+            List<Member> members = findTeam.getMembers();
 
-            int memberSize = findTeam.getMembers().size();
-
-            System.out.println(memberSize);
+            for(Member m : members) {
+                System.out.println("m.getName() = " + m.getName());
+            }
 
             tx.commit();
         } catch (Exception e) {
