@@ -18,24 +18,24 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
             Member member = new Member();
-            member.setUsername("A");
-
-            Member member2 = new Member();
-            member2.setUsername("B");
-
-            Member member3 = new Member();
-            member3.setUsername("C");
-
-            System.out.println("==================================");
+            member.setName("member1");
+            member.setTeamId(team.getId()); // 외래 키 식별자를 직접 다룸
             em.persist(member);
-            em.persist(member2);
-            em.persist(member3);
 
-            System.out.println("member.getId() = " + member.getId());
-            System.out.println("member2.getId() = " + member2.getId());
-            System.out.println("member3.getId() = " + member3.getId());
-            System.out.println("==================================");
+            //조회 
+            Member findMember = em.find(Member.class, member.getId());
+            Long findTeamId = findMember.getTeamId();
+            Team findTeam = em.find(Team.class, findTeamId);
+            //식별자로 다시 조회, 객체 지향적인 방법은 아니다.
+            //객체를 테이블에 맞추어 데이터 중심으로 모델링하면, 협력 관계를 만들 수 없다.
+            //테이블은 외래 키로 조인을 사용해서 연관된 테이블을 찾는다.
+            //테이블과 객체 사이에는 이런 큰 간격이 있다.
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
