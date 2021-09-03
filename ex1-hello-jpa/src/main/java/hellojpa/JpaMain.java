@@ -26,10 +26,6 @@ public class JpaMain {
 
             Team team = new Team();
             team.setName("TeamA");
-            // update쿼리가 나감
-            // 실제로 update 되는 것은 MEMBER TABLE
-            team.getMembers().add(member);
-
             em.persist(team);
 
             tx.commit();

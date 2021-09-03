@@ -12,8 +12,14 @@ public class Member {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "TEAM_ID")
     private Team team;
+
+    // 주 테이블에 외래키를 놓는 것을 선호한다. - 개발자 입장
+    // DBA 입장에서는 대상 테이블에 외래키를 놓는 것을 선호할 확률이 높음.
+    @OneToOne
+    @JoinColumn(name = "LOCKER_ID")
+    private Locker locker;
 
     public Long getId() {
         return id;
