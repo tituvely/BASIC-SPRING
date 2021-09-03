@@ -31,8 +31,11 @@ public class JpaMain {
             //연관관계의 주인에 값 설정
             member.setTeam(team);
 
-            em.flush();
-            em.clear();
+            //영속성 컨텍스트를 삭제하지 않을 경우에는 양쪽에 값을 다 설정해줘야 함
+            team.getMembers().add(member);
+
+            //em.flush();
+            //em.clear();
 
             Team findTeam = em.find(Team.class, team.getId());
             List<Member> members = findTeam.getMembers();
