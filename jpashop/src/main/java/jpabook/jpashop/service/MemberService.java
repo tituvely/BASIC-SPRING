@@ -3,6 +3,7 @@ package jpabook.jpashop.service;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.repository.MemberRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,10 +12,10 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MemberService {
 
-    // final 키워드를 추가하면 컴파일 시점에 memberRepository를 설정하지 않는 오류를 체크할 수 있다.
+    // @RequiredArgsConstructor를 쓰면 final이 붙은 필드만 가지고 생성자를 만든다.
     private final MemberRepository memberRepository;
 
     /**
