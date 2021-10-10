@@ -112,4 +112,24 @@ public class OrderApiController {
         }
     }
 
+    /**
+     * V3. 엔티티를 DTO로 변환 (fetch join 사용O)
+     * - 페치 조인 최적화: 페치 조인으로 SQL이 1번만 실행됨
+     * select 쿼리에서 distinct 를 사용한 이유는 1대다 조인이 있으므로 데이터베이스 row가 증가하기 때문.
+     * 그 결과 같은 order 엔티티의 조회 수도 증가하게 된다.
+     * JPA의 distinct는 SQL에 distinct를 추가하고, 더해서 같은 엔티티가 조회되면, 애플리케이션에서 중복을 걸러준다.
+     * 이 예에서 order가 컬렉션 페치 조인 때문에 중복 조회 되는 것을 막아준다.
+     * - 단점: 페이징 불가능
+     * 컬렉션 페치 조인을 사용하면 페이징이 불가능하다.
+     * (참고: 컬렉션 페치 조인은 1개만 사용할 수 있다. 컬렉션 둘 이상에 페치 조인을 사용하면 안된다. 데이터가 부정합하게 조회될 수 있다.)
+     */
+    @GetMapping("/api/v3/orders")
+    public List<OrderDto> ordersV3() {
+        List<Order> orders = orderRepository.findAllWithItem();
+        List<OrderDto> result = orders.stream()
+                .map(o -> new OrderDto(o))
+                .collect(toList());
+        return result;
+    }
+
 }
