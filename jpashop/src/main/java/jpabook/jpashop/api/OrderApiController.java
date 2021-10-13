@@ -6,6 +6,8 @@ import jpabook.jpashop.domain.OrderItem;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
+import jpabook.jpashop.repository.order.query.OrderFlatDto;
+import jpabook.jpashop.repository.order.query.OrderItemQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryRepository;
 import lombok.Data;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.*;
 
 /**
  * V1. 엔티티 직접 노출
@@ -30,7 +32,7 @@ import static java.util.stream.Collectors.toList;
  *
  * V3. 엔티티를 조회해서 DTO로 변환(fetch join 사용O)
  * - 페이징 시에는 N 부분을 포기해야함(대신에 batch fetch size? 옵션 주면 N -> 1 쿼리로 변경
- 가능)
+ * 가능)
  *
  * V4.JPA에서 DTO로 바로 조회, 컬렉션 N 조회 (1+NQuery)
  * - 페이징 가능
@@ -71,10 +73,10 @@ public class OrderApiController {
      * V2. 엔티티를 DTO로 변환 (fetch join 사용X)
      * - 지연 로딩으로 너무 많은 SQL 실행
      * - SQL 실행 수
-     *   - order 1번
-     *   - member, address N번(order 조회 수 만큼)
-     *   - orderItem N번(order 조회 수 만큼)
-     *   - item N번(orderItem 조회 수 만큼)
+     * - order 1번
+     * - member, address N번(order 조회 수 만큼)
+     * - orderItem N번(order 조회 수 만큼)
+     * - item N번(orderItem 조회 수 만큼)
      */
     @GetMapping("/api/v2/orders")
     public List<OrderDto> ordersV2() {
@@ -93,6 +95,7 @@ public class OrderApiController {
         private OrderStatus orderStatus;
         private Address address;
         private List<OrderItemDto> orderItems;
+
         public OrderDto(Order order) {
             orderId = order.getId();
             name = order.getMember().getName();
@@ -110,6 +113,7 @@ public class OrderApiController {
         private String itemName;//상품 명
         private int orderPrice; //주문 가격
         private int count; //주문 수량
+
         public OrderItemDto(OrderItem orderItem) {
             itemName = orderItem.getItem().getName();
             orderPrice = orderItem.getOrderPrice();
@@ -142,9 +146,9 @@ public class OrderApiController {
      * 페이징 + 컬렉션 엔티티를 함께 조회하려면?
      * - ToOne 관계만 우선 모두 페치 조인으로 최적화 (ToOne 관계는 row수를 증가시키지 않으므로 페이징 쿼리에 영향을 주지 않는다.)
      * - 컬렉션은 지연 로딩으로 조회하고, 지연 로딩 성능 최적화를 위해 hibernate.default_batch_fetch_size, @BatchSize를 적용한다.
-     *   - hibernate.default_batch_fetch_size: 글로벌 설정
-     *   - @BatchSize: 개별 최적화
-     *   - 이 옵션을 사용하면 컬렉션이나, 프록시 객체를 한꺼번에 설정한 size만큼 IN 쿼리로 조회한다.
+     * - hibernate.default_batch_fetch_size: 글로벌 설정
+     * - @BatchSize: 개별 최적화
+     * - 이 옵션을 사용하면 컬렉션이나, 프록시 객체를 한꺼번에 설정한 size만큼 IN 쿼리로 조회한다.
      *
      * 컬렉션을 페치 조인하면 페이징이 불가능하다.
      * - 컬렉션을 페치 조인하면 일대다 조인이 발생하므로 데이터가 예측할 수 없이 증가한다.
@@ -188,5 +192,24 @@ public class OrderApiController {
     @GetMapping("/api/v5/orders")
     public List<OrderQueryDto> ordersV5() {
         return orderQueryRepository.findAllByDto_optimization();
+    }
+
+    /**
+     * V6. JPA에서 DTO로 바로 조회, 플랫 데이터(1Query) (1 Query)
+     * - Query: 1번
+     * 단점
+     * - 쿼리는 한번이지만 조인으로 인해 DB에서 애플리케이션에 전달하는 데이터에 중복 데이터가 추가되므로 상황에 따라 V5보다 더 느릴 수 도 있다.
+     * - 애플리케이션에서 추가 작업이 크다.
+     * - 페이징 불가능
+     */
+    @GetMapping("/api/v6/orders")
+    public List<OrderQueryDto> ordersV6() {
+        List<OrderFlatDto> flats = orderQueryRepository.findAllByDto_flat();
+        return flats.stream()
+                .collect(groupingBy(o -> new OrderQueryDto(o.getOrderId(), o.getName(), o.getOrderDate(), o.getOrderStatus(), o.getAddress()),
+                      mapping(o -> new OrderItemQueryDto(o.getOrderId(), o.getItemName(), o.getOrderPrice(), o.getCount()), toList())
+                )).entrySet().stream()
+                .map(e -> new OrderQueryDto(e.getKey().getOrderId(), e.getKey().getName(), e.getKey().getOrderDate(), e.getKey().getOrderStatus(), e.getKey().getAddress(), e.getValue()))
+                .collect(toList());
     }
 }
