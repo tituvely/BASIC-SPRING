@@ -173,11 +173,20 @@ public class OrderApiController {
     }
 
     /**
-     * V4.JPA에서 DTO로 바로 조회, 컬렉션 N 조회 (1+NQuery)
+     * V4. JPA에서 DTO로 바로 조회, 컬렉션 N 조회 (1+NQuery)
      */
     @GetMapping("/api/v4/orders")
     public List<OrderQueryDto> ordersV4() {
         return orderQueryRepository.findOrderQueryDtos();
     }
 
+    /**
+     * V5. JPA에서 DTO로 바로 조회, 컬렉션 1 조회 최적화 버전 (1+1Query)
+     * - Query: 루트 1번, 컬렉션 1번
+     * - MAP을 사용해서 매칭 성능 향상(O(1))
+     */
+    @GetMapping("/api/v5/orders")
+    public List<OrderQueryDto> ordersV5() {
+        return orderQueryRepository.findAllByDto_optimization();
+    }
 }
