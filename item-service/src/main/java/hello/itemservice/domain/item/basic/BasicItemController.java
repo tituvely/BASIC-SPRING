@@ -36,7 +36,7 @@ public class BasicItemController {
         return "basic/addForm";
     }
 
-    @PostMapping("/add")
+//    @PostMapping("/add")
     public String addItemV1(@RequestParam String itemName,
                             @RequestParam Integer price,
                             @RequestParam Integer quantity,
@@ -49,6 +49,19 @@ public class BasicItemController {
         itemRepository.save(item);
 
         model.addAttribute("item", item);
+
+        return "basic/item";
+    }
+
+    // @ModelAttribute 는 모델(Model)에 @ModelAttribute 로 지정한 객체를 자동으로 넣어준다.
+    // 모델에 데이터를 담을 때는 이름이 필요하다. 이름은 @ModelAttribute 에 지정한 name(value) 속성을 사용한다.
+    // 만약 다음과 같이 @ModelAttribute 의 이름을 다르게 지정하면 다른 이름으로 모델에 포함된다.
+    // @ModelAttribute("hello") Item item 이름을 hello 로 지정
+    // model.addAttribute("hello", item); 모델에 hello 이름으로 저장
+    @PostMapping("/add")
+    public String addItemV2(@ModelAttribute("item") Item item, Model model) {
+        itemRepository.save(item);
+        // model.addAttribute("item", item); //자동 추가, 생략 가능
 
         return "basic/item";
     }
