@@ -29,7 +29,8 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            Movie findMovie = em.find(Movie.class, movie.getId());
+            // 부모 객체로 찾을경우, union all로 모든 서브타입 클래스를 조회하기 때문에 성능상의 이슈 발생 
+            Item findMovie = em.find(Item.class, movie.getId());
             System.out.println("findMovie = " + findMovie);
 
             tx.commit();
