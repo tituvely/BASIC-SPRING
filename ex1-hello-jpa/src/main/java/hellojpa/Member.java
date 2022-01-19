@@ -13,6 +13,20 @@ public class Member extends BaseEntity {
     @Column(name = "USERNAME")
     private String name;
 
+    @Embedded
+    private Period workPeriod;
+
+    @Embedded
+    private Address homeAddress;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="city", column=@Column(name = "WORK_CITY")),
+            @AttributeOverride(name="street", column=@Column(name = "WORK_STREET")),
+            @AttributeOverride(name="zipcode", column=@Column(name = "WORK_ZIPCODE")),
+    })
+    private Address workAddress;
+
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
     private Team team;
@@ -42,4 +56,19 @@ public class Member extends BaseEntity {
         this.name = name;
     }
 
+    public Period getWorkPeriod() {
+        return workPeriod;
+    }
+
+    public void setWorkPeriod(Period workPeriod) {
+        this.workPeriod = workPeriod;
+    }
+
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(Address address) {
+        this.homeAddress = address;
+    }
 }
