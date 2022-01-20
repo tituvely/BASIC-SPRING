@@ -2,7 +2,9 @@ package hellojpa;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Member extends BaseEntity {
@@ -26,6 +28,15 @@ public class Member extends BaseEntity {
             @AttributeOverride(name="zipcode", column=@Column(name = "WORK_ZIPCODE")),
     })
     private Address workAddress;
+
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFoods = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+    private List<Address> addressHistory = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
@@ -70,5 +81,13 @@ public class Member extends BaseEntity {
 
     public void setHomeAddress(Address address) {
         this.homeAddress = address;
+    }
+
+    public Set<String> getFavoriteFoods() {
+        return favoriteFoods;
+    }
+
+    public List<Address> getAddressHistory() {
+        return addressHistory;
     }
 }
