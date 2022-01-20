@@ -34,9 +34,8 @@ public class Member extends BaseEntity {
     @Column(name = "FOOD_NAME")
     private Set<String> favoriteFoods = new HashSet<>();
 
-    @ElementCollection
-    @CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name = "MEMBER_ID"))
-    private List<Address> addressHistory = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AddressEntity> addressHistory = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
@@ -87,7 +86,7 @@ public class Member extends BaseEntity {
         return favoriteFoods;
     }
 
-    public List<Address> getAddressHistory() {
+    public List<AddressEntity> getAddressHistory() {
         return addressHistory;
     }
 }
