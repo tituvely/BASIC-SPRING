@@ -48,6 +48,17 @@ public class JpaMain {
                 System.out.println("favoriteFood = " + favoriteFood);
             }
 
+            Address a = findMember.getHomeAddress();
+            findMember.setHomeAddress(new Address("new city", a.getStreet(), a.getZipcode()));
+
+            System.out.println("========FAVORITE FOODS========");
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("한식");
+
+            System.out.println("========ADDRESS========");
+            findMember.getAddressHistory().remove(new Address("old1", "street", "zipcode"));
+            findMember.getAddressHistory().add(new Address("new city1", "street", "zipcode"));
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
