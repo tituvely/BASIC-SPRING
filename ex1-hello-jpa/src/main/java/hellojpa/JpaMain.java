@@ -1,11 +1,7 @@
 package hellojpa;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 public class JpaMain {
 
@@ -20,11 +16,15 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Member member = new Member();
+            member.setName("member1");
+            em.persist(member);
 
-            List<Member> result = em.createQuery(
-                    "select m From Member m where m.name like '%kim%'",
-                        Member.class)
-                .getResultList();
+            // TypedQuery: 반환 타입이 명확할 때,
+            // Query: 반환 타입이 명확하지 않을 때
+            TypedQuery<Member> query1 = em.createQuery("select m from Member m", Member.class);
+//            TypedQuery<String> query2 = em.createQuery("select m.name from Member m", String.class);
+//            Query query3 = em.createQuery("select m.name, m.id from Member m", Member.class);
 
             tx.commit();
         } catch (Exception e) {
