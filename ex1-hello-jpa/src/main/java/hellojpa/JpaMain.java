@@ -20,11 +20,16 @@ public class JpaMain {
             member.setName("member1");
             em.persist(member);
 
-            // TypedQuery: 반환 타입이 명확할 때,
-            // Query: 반환 타입이 명확하지 않을 때
             TypedQuery<Member> query1 = em.createQuery("select m from Member m", Member.class);
-//            TypedQuery<String> query2 = em.createQuery("select m.name from Member m", String.class);
-//            Query query3 = em.createQuery("select m.name, m.id from Member m", Member.class);
+
+            // 결과 조회 API
+            // query.getResultList(): 결과가 없으면 빈 리스트 반환
+            // query.getSingleResult()
+            //  - 결과가 없으면: javax.persistence.NoResultException
+            //  - 둘 이상이면: javax.persistence.NonUniqueResultException
+            List<Member> resultList = query1.getResultList();
+            Member singleResult = query1.getSingleResult();
+            System.out.println("singleResult = " + singleResult.getName());
 
             tx.commit();
         } catch (Exception e) {
