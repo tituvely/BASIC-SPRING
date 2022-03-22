@@ -95,4 +95,13 @@ public class Member extends BaseEntity {
     public List<AddressEntity> getAddressHistory() {
         return addressHistory;
     }
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
 }
