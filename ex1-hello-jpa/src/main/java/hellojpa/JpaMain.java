@@ -20,15 +20,15 @@ public class JpaMain {
             member.setName("member1");
             em.persist(member);
 
-            TypedQuery<Member> query1 = em.createQuery("select m from Member m where m.name = :name", Member.class);
-            query1.setParameter("name", member.getName());
-            Member singleResult = query1.getSingleResult();
-            System.out.println("singleResult = " + singleResult.getName());
+            em.flush();
+            em.clear();
 
-            Member singleResult2 = em.createQuery("select m from Member m where m.name = ?1", Member.class)
-                    .setParameter(1, member.getName())
-                    .getSingleResult();
-            System.out.println("singleResult2 = " + singleResult2.getName());
+            List<Member> result = em.createQuery("select m from Member m", Member.class).getResultList();
+
+            // update쿼리가 나감 -> 조회로 가져온 Entity는 영속성 컨텍스트에서 관리됨
+            Member findMember = result.get(0);
+            findMember.setName("newMember");
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
