@@ -39,7 +39,7 @@ public class Member extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AddressEntity> addressHistory = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
@@ -94,6 +94,10 @@ public class Member extends BaseEntity {
 
     public List<AddressEntity> getAddressHistory() {
         return addressHistory;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     @Override

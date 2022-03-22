@@ -17,26 +17,30 @@ public class JpaMain {
 
         try {
             for (int i = 0; i < 100; i++) {
-                Member member = new Member();
-                member.setName("member" + i);
-                member.setAge(i);
-                em.persist(member);
             }
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setName("member1");
+            member.setAge(10);
+
+            member.setTeam(team);
+
+            em.persist(member);
 
             em.flush();
             em.clear();
 
-            // 페이징 API
-            List<Member> result = em.createQuery("SELECT m FROM Member m order by m.age desc", Member.class)
-                    .setFirstResult(1)
-                    .setMaxResults(10)
-                    .getResultList();
+            List<Member> result = em.createQuery("select m from Member m inner join m.team t", Member.class).getResultList();
+            List<Member> result2 = em.createQuery("select m from Member m left join m.team t", Member.class).getResultList();
+            List<Member> result3 = em.createQuery("select m from Member m, Team t where m.name = t.name", Member.class).getResultList();
 
-            System.out.println("result.size() = " + result.size());
-            for (Member m: result) {
-                System.out.println("m = " + m);
-            }
-
+            // 조인 대상 필터링
+            List<Member> result4 = em.createQuery("select m from Member m left join Team t on t.name = 'teamA' ", Member.class).getResultList();
+            System.out.println("result4.size() = " + result4.size());
+            System.out.println("member = " + result4.get(0));
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
