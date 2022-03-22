@@ -15,6 +15,8 @@ public class Member extends BaseEntity {
     @Column(name = "USERNAME")
     private String name;
 
+    private Integer age;
+
     @Embedded
     private Period workPeriod;
 
@@ -56,6 +58,10 @@ public class Member extends BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public String getName() {
