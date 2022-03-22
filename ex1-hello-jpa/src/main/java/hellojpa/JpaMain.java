@@ -23,11 +23,12 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            List<Member> result = em.createQuery("select m from Member m", Member.class).getResultList();
-
-            // update쿼리가 나감 -> 조회로 가져온 Entity는 영속성 컨텍스트에서 관리됨
-            Member findMember = result.get(0);
-            findMember.setName("newMember");
+            // 임베디드 타입 프로젝션
+            em.createQuery("select m.homeAddress from Member m", Address.class).getResultList();
+            // 엔티티 타입 프로젝션 - 조인
+            em.createQuery("select m.team from Member m", Team.class).getResultList();
+            // 스칼라 타입 프로젝션
+            em.createQuery("select m.name from Member m").getResultList();
 
             tx.commit();
         } catch (Exception e) {
