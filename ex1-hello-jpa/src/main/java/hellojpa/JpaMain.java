@@ -16,31 +16,49 @@ public class JpaMain {
         tx.begin();
 
         try {
-            for (int i = 0; i < 100; i++) {
-            }
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
-
             Member member = new Member();
             member.setName("member1");
             member.setAge(10);
-
-            member.setTeam(team);
-
             em.persist(member);
+
+            Member member2 = new Member();
+            member2.setAge(20);
+            em.persist(member2);
+
+            Member member3 = new Member();
+            member3.setName("관리자");
+            member3.setAge(70);
+            em.persist(member3);
 
             em.flush();
             em.clear();
 
-            List<Member> result = em.createQuery("select m from Member m inner join m.team t", Member.class).getResultList();
-            List<Member> result2 = em.createQuery("select m from Member m left join m.team t", Member.class).getResultList();
-            List<Member> result3 = em.createQuery("select m from Member m, Team t where m.name = t.name", Member.class).getResultList();
+            String query =
+                    "select " +
+                            "case when m.age <= 10 then '학생요금' " +
+                            "     when m.age >= 60 then '경로요금' " +
+                            "     else '일반요금' " +
+                            "end " +
+                    "from Member m";
+            List<String> resultList = em.createQuery(query, String.class).getResultList();
+            for (String s: resultList) {
+                System.out.println("s = " + s);
+            }
 
-            // 조인 대상 필터링
-            List<Member> result4 = em.createQuery("select m from Member m left join Team t on t.name = 'teamA' ", Member.class).getResultList();
-            System.out.println("result4.size() = " + result4.size());
-            System.out.println("member = " + result4.get(0));
+            // COALESCE: 하나씩 조회해서 null이 아니면 반환, null이면 두번째 값 반환
+            String query2 = "select coalesce(m.name, '이름없는회원') from Member m";
+            resultList = em.createQuery(query2, String.class).getResultList();
+            for (String s: resultList) {
+                System.out.println("s = " + s);
+            }
+
+            // NULLIF: 두 값이 같으면 null 반환, 다르면 첫번째 값 반환
+            String query3 = "select nullif(m.name, '관리자') from Member m";
+            resultList = em.createQuery(query3, String.class).getResultList();
+            for (String s: resultList) {
+                System.out.println("s = " + s);
+            }
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
