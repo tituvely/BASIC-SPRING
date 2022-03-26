@@ -20,6 +20,10 @@ public class JpaMain {
             team.setName("team1");
             em.persist(team);
 
+            Team team2 = new Team();
+            team2.setName("team2");
+            em.persist(team2);
+
             Member member = new Member();
             member.setName("member1");
             member.setAge(10);
@@ -27,19 +31,28 @@ public class JpaMain {
             em.persist(member);
 
             Member member2 = new Member();
-            member.setName("member2");
+            member2.setName("member2");
             member2.setAge(20);
             member2.setTeam(team);
             em.persist(member2);
 
+            Member member3 = new Member();
+            member3.setName("member3");
+            member3.setAge(20);
+            member3.setTeam(team2);
+            em.persist(member3);
+
             em.flush();
             em.clear();
 
-            String query = "select m from Member m join fetch m.team";
-            List<Member> resultList = em.createQuery(query, Member.class).getResultList();
-            for (Member s: resultList) {
-                System.out.println("s = " + s.getName());
-                System.out.println("s = " + s.getTeam().getName());
+            // 컬렉션 페치 조인의 문제점 -> join하면서 데이터가 뻥튀기됨
+            String query = "select t from Team t join fetch t.members";
+            List<Team> resultList = em.createQuery(query, Team.class).getResultList();
+            for (Team t: resultList) {
+                System.out.println("t = " + t.getName() + ", size = "+ t.getMembers().size());
+                for (Member m: t.getMembers()) {
+                    System.out.println("m = " + m);
+                }
             }
 
             tx.commit();
