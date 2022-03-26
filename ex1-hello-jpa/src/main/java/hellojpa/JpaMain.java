@@ -42,17 +42,17 @@ public class JpaMain {
             member3.setTeam(team2);
             em.persist(member3);
 
-            em.flush();
-            em.clear();
+            // FLUSH 자동 호출 -> 데이터베이스에 query가 나가기 때문
+            // 벌크 연산: 쿼리 한 번으로 여러 테이블 로우 변경
+            // UPDATE, DELETE 지원
+            int resultCount = em.createQuery("update Member m set m.age = 50")
+                    .executeUpdate();
+            System.out.println("resultCount = " + resultCount);
 
-            // NamedQuery는 애플리케이션 로딩 시점에 쿼리를 검증
-            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
-                    .setParameter("name", "member1")
-                    .getResultList();
-
-            for(Member m: resultList) {
-                System.out.println("m = " + m);
-            }
+            // 벌크 연산은 영속성 컨텍스트를 무시하고 데이터베이스에 직접 쿼리를 날리기 때문에 정합성이 안 맞는 경우가 생긴다.
+            System.out.println("member = " + member.getAge());
+            System.out.println("member2 = " + member2.getAge());
+            System.out.println("member3 = " + member3.getAge());
 
             tx.commit();
         } catch (Exception e) {
