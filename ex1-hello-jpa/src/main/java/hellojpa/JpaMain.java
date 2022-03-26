@@ -54,6 +54,19 @@ public class JpaMain {
             System.out.println("member2 = " + member2.getAge());
             System.out.println("member3 = " + member3.getAge());
 
+            // 따라서
+            // 1. 벌크 연산부터 먼저 실행하거나
+            // 2. 벌크 연산 수행 후 영속성 컨텍스트를 초기화한다.
+
+            em.clear();
+
+            Member findMember = em.find(Member.class, member.getId());
+            Member findMember2 = em.find(Member.class, member2.getId());
+            Member findMember3 = em.find(Member.class, member3.getId());
+            System.out.println("member = " + findMember.getAge());
+            System.out.println("member2 = " + findMember2.getAge());
+            System.out.println("member3 = " + findMember3.getAge());
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
