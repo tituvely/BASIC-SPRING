@@ -45,19 +45,13 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            // 컬렉션 페치 조인에서는 페이징이 안되기 때문에
-            // BatchSize를 써서 n + 1 문제 해결
-            String query = "select t from Team t";
-            List<Team> resultList = em.createQuery(query, Team.class)
-                    .setFirstResult(0)
-                    .setMaxResults(2)
+            // NamedQuery는 애플리케이션 로딩 시점에 쿼리를 검증
+            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+                    .setParameter("name", "member1")
                     .getResultList();
 
-            for (Team t: resultList) {
-                System.out.println("t = " + t.getName() + ", size = "+ t.getMembers().size());
-                for (Member m: t.getMembers()) {
-                    System.out.println("m = " + m);
-                }
+            for(Member m: resultList) {
+                System.out.println("m = " + m);
             }
 
             tx.commit();
