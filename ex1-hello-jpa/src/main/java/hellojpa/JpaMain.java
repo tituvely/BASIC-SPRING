@@ -46,7 +46,8 @@ public class JpaMain {
             em.clear();
 
             // 컬렉션 페치 조인의 문제점 -> join하면서 데이터가 뻥튀기됨
-            String query = "select t from Team t join fetch t.members";
+            // distinct를 쓰면, JPA가 같은 식별자를 가진 엔티티를 제거해줌
+            String query = "select distinct t from Team t join fetch t.members";
             List<Team> resultList = em.createQuery(query, Team.class).getResultList();
             for (Team t: resultList) {
                 System.out.println("t = " + t.getName() + ", size = "+ t.getMembers().size());
