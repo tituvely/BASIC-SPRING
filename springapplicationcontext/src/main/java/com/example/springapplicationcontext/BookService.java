@@ -6,8 +6,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookService {
 
-    @Autowired(required = false)
+    @Autowired
     BookRepository bookRepository;
 
+    public void printBookRepository() {
+        System.out.println(bookRepository.getClass());
+    }
 }
 
