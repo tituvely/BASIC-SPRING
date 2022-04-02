@@ -16,8 +16,7 @@
 </br>
 
 ## [스프링 프레임워크 핵심 기술](https://www.inflearn.com/course/spring-framework_core)
-</br>
-- 스프링 IOC 컨테이너는 1) 빈 인스턴스 설정과 2) 의존관계 설정 3) 빈 제공 역할을 한다.  </br>
+- 스프링 IOC 컨테이너는 1) 빈 인스턴스 설정과 2) 의존관계 설정 3) 빈 제공 역할을 한다. </br>
   - ApplicationContext에서 빈을 꺼내쓸 수 있다.  </br>
   - @Autowired  </br>
   - @ComponentScan  </br>
