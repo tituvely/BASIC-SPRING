@@ -1,5 +1,6 @@
 package com.example.springapplicationcontext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -8,4 +9,10 @@ import org.springframework.stereotype.Component;
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Proto {
 
+    @Autowired
+    Single single;
+
+    public Single getSingle() {
+        return single;
+    }
 }

@@ -26,5 +26,10 @@ public class AppRunner implements ApplicationRunner {
         System.out.println(ctx.getBean(Single.class).getProto());
         System.out.println(ctx.getBean(Single.class).getProto());
         System.out.println(ctx.getBean(Single.class).getProto());
+
+        System.out.println("proto내에서 single을 필드로 가질 경우 single을 동일함");
+        System.out.println(ctx.getBean(Proto.class).getSingle());
+        System.out.println(ctx.getBean(Proto.class).getSingle());
+        System.out.println(ctx.getBean(Proto.class).getSingle());
     }
 }
