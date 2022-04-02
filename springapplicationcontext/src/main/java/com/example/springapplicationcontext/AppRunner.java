@@ -16,9 +16,10 @@ public class AppRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        System.out.println(messageSource.getClass());
-
-        System.out.println(messageSource.getMessage("greeting", new String[]{"daisy"}, Locale.KOREA));
-        System.out.println(messageSource.getMessage("greeting", new String[]{"daisy"}, Locale.getDefault()));
+        while (true) {
+            System.out.println(messageSource.getMessage("greeting", new String[]{"daisy"}, Locale.KOREA));
+            System.out.println(messageSource.getMessage("greeting", new String[]{"daisy"}, Locale.getDefault()));
+            Thread.sleep(1000);
+        }
     }
 }
