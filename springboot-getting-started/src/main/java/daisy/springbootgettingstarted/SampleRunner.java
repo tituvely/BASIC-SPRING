@@ -14,8 +14,9 @@ public class SampleRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("=============");
-        System.out.println("name = " + daisyProperties.getName());
-        System.out.println("name = " + daisyProperties.getAge());
+        System.out.println(daisyProperties.getName());
+        System.out.println(daisyProperties.getAge());
+        System.out.println(daisyProperties.getSessionTimeout());
         System.out.println("=============");
     }
 }

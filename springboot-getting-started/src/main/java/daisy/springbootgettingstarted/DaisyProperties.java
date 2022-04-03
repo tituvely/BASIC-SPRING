@@ -1,17 +1,32 @@
 package daisy.springbootgettingstarted;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.convert.DurationUnit;
 import org.springframework.stereotype.Component;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 @Component
 @ConfigurationProperties("daisy")
 public class DaisyProperties {
 
-    String name;
+    private String name;
 
-    String age;
+    private String age;
 
-    String fullName;
+    private String fullName;
+
+    @DurationUnit(ChronoUnit.SECONDS)
+    private Duration sessionTimeout = Duration.ofSeconds(30);
+
+    public Duration getSessionTimeout() {
+        return sessionTimeout;
+    }
+
+    public void setSessionTimeout(Duration sessionTimeout) {
+        this.sessionTimeout = sessionTimeout;
+    }
 
     public String getName() {
         return name;
