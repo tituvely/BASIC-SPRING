@@ -2,20 +2,15 @@ package daisy.springbootgettingstarted;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@RestController
 public class SpringbootGettingStartedApplication {
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
-    }
-
     public static void main(String[] args) {
-        SpringApplication.run(SpringbootGettingStartedApplication.class, args);
+        // 따라서 명시적으로, Listener를 등록해주어야 함
+        SpringApplication app = new SpringApplication(SpringbootGettingStartedApplication.class);
+        app.addListeners(new SampleListener());
+        app.run(args);
     }
 
 }
