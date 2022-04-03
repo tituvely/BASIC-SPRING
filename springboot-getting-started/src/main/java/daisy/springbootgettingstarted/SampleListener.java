@@ -1,18 +1,18 @@
 package daisy.springbootgettingstarted;
 
-import org.springframework.boot.context.event.ApplicationStartingEvent;
+import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SampleListener implements ApplicationListener<ApplicationStartingEvent> {
+public class SampleListener implements ApplicationListener<ApplicationStartedEvent> {
 
-    // ApplicationContext가 만들어지기 전이기 때문에,
-    // Listener를 Bean으로 등록해도 설정이 먹지 않는다.
+    // ApplicationContext가 만들어진 후이기 때문에,
+    // Listener를 Bean으로 등록하면 설정이 먹는다.
     @Override
-    public void onApplicationEvent(ApplicationStartingEvent event) {
+    public void onApplicationEvent(ApplicationStartedEvent event) {
         System.out.println("=======================");
-        System.out.println("Application is starting");
+        System.out.println("Application is started");
         System.out.println("=======================");
     }
 }
