@@ -12,11 +12,4 @@ public class SpringbootGettingStartedApplication {
         SpringApplication.run(SpringbootGettingStartedApplication.class, args);
     }
 
-    @Bean
-    public Man man() {
-        Man man = new Man();
-        man.setName("titu");
-        man.setAge(26);
-        return man;
-    }
 }
