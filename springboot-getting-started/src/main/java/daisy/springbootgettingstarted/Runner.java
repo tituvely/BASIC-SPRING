@@ -1,15 +1,15 @@
 package daisy.springbootgettingstarted;
 
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Component
-public class Runner implements ApplicationRunner {
+public class Runner implements CommandLineRunner {
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-        System.out.println("foo: " + args.containsOption("foo"));
-        System.out.println("bar: " + args.containsOption("bar"));
+    public void run(String... args) throws Exception {
+        Arrays.stream(args).forEach(System.out::println);
     }
 }
