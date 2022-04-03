@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@TestPropertySource(properties = "daisy.name=daisy2")
+@TestPropertySource(locations = "classpath:/test.properties")
 @SpringBootTest
 class SpringbootGettingStartedApplicationTests {
 
