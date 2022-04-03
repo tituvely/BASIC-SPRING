@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(properties = "daisy.name=daisy2")
 class SpringbootGettingStartedApplicationTests {
 
     @Autowired
@@ -19,7 +19,7 @@ class SpringbootGettingStartedApplicationTests {
     @Test
     void contextLoads() {
         assertThat(environment.getProperty("daisy.name"))
-                .isEqualTo("daisy");
+                .isEqualTo("daisy2");
     }
 
 }
