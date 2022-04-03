@@ -1,6 +1,6 @@
 package daisy.springbootgettingstarted;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -8,13 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class SampleRunner implements ApplicationRunner {
 
-    @Value("${daisy.name}")
-    private String name;
+    @Autowired
+    DaisyProperties daisyProperties;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("=============");
-        System.out.println("name = " + name);
+        System.out.println("name = " + daisyProperties.getName());
+        System.out.println("name = " + daisyProperties.getAge());
         System.out.println("=============");
     }
 }
