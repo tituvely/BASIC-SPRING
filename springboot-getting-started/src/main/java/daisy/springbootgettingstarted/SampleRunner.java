@@ -11,12 +11,15 @@ public class SampleRunner implements ApplicationRunner {
     @Autowired
     DaisyProperties daisyProperties;
 
+    @Autowired
+    private String hello;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         System.out.println("=============");
-        System.out.println(daisyProperties.getName());
-        System.out.println(daisyProperties.getAge());
-        System.out.println(daisyProperties.getSessionTimeout());
+        System.out.println("hello = " + hello);
+        System.out.println("name = " + daisyProperties.getName());
+        System.out.println("fullname = " + daisyProperties.getFullName());
         System.out.println("=============");
     }
 }
