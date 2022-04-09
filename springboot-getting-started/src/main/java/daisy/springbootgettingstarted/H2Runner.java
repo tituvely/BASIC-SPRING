@@ -21,6 +21,7 @@ public class H2Runner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        // JDBC API
         Connection connection = dataSource.getConnection();
         System.out.println("url: " + connection.getMetaData().getURL());
         System.out.println("username: " + connection.getMetaData().getUserName());
@@ -30,6 +31,7 @@ public class H2Runner implements ApplicationRunner {
         statement.close();
         connection.close();
 
+        // Connection 연결을 관리하지 않아도 되는 jdbcTemplate
         jdbcTemplate.execute("INSERT INTO USER VALUES(1, 'daisy')");
     }
 }
