@@ -27,12 +27,12 @@ public class H2Runner implements ApplicationRunner {
         System.out.println("url: " + connection.getMetaData().getURL());
         System.out.println("username: " + connection.getMetaData().getUserName());
         Statement statement = connection.createStatement();
-        String sql = "CREATE TABLE USER(ID INTEGER NOT NULL, name VARCHAR(255), PRIMARY KEY (id))";
+        String sql = "CREATE TABLE USERS(ID INTEGER NOT NULL, name VARCHAR(255), PRIMARY KEY (id))";
         statement.executeUpdate(sql);
         statement.close();
         connection.close();
 
         // Connection 연결을 관리하지 않아도 되는 jdbcTemplate
-        jdbcTemplate.execute("INSERT INTO USER VALUES(1, 'daisy')");
+        jdbcTemplate.execute("INSERT INTO USERS VALUES(1, 'daisy')");
     }
 }
