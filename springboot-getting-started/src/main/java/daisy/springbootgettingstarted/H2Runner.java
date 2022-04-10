@@ -23,6 +23,7 @@ public class H2Runner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         // JDBC API
         Connection connection = dataSource.getConnection();
+        System.out.println("datasource: " + dataSource.getClass());
         System.out.println("url: " + connection.getMetaData().getURL());
         System.out.println("username: " + connection.getMetaData().getUserName());
         Statement statement = connection.createStatement();
