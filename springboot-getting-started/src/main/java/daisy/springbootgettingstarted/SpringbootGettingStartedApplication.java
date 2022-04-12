@@ -1,18 +1,18 @@
 package daisy.springbootgettingstarted;
 
 import daisy.springbootgettingstarted.account.Account;
+import daisy.springbootgettingstarted.account.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 @SpringBootApplication
 public class SpringbootGettingStartedApplication {
 
     @Autowired
-    MongoTemplate mongoTemplate;
+    AccountRepository accountRepository;
 
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(SpringbootGettingStartedApplication.class);
@@ -26,7 +26,7 @@ public class SpringbootGettingStartedApplication {
             account.setName("daisy");
             account.setEmail("daisy@spring.com");
 
-            mongoTemplate.insert(account);
+            accountRepository.insert(account);
         };
     }
 
