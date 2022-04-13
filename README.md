@@ -6,6 +6,9 @@
 ## [스프링 MVC 1편 - 백엔드 웹 개발 핵심 기술](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-1)
 </br>
 
+## [스프링 MVC 2편 - 백엔드 웹 개발 활용 기술](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-mvc-2)
+</br>
+
 ## [자바 ORM 표준 JPA 프로그래밍 - 기본편](https://www.inflearn.com/course/ORM-JPA-Basic)
 </br>
 
@@ -16,10 +19,7 @@
 </br>
 
 ## [스프링 프레임워크 핵심 기술](https://www.inflearn.com/course/spring-framework_core)
-- 스프링 IOC 컨테이너는 1) 빈 인스턴스 설정과 2) 의존관계 설정 3) 빈 제공 역할을 한다. </br>
-  - ApplicationContext에서 빈을 꺼내쓸 수 있다.  </br>
-  - @Autowired  </br>
-  - @ComponentScan  </br>
+</br>
 
 ## [Spring Boot JWT Tutorial](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-jwt)
 </br>
