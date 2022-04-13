@@ -7,14 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
 
     @GetMapping("/hello")
-    public String hello() throws InterruptedException {
-        Thread.sleep(5000L);
+    public String hello() {
         return "hello";
     }
 
-    @GetMapping("/my")
-    public String my() throws InterruptedException {
-        Thread.sleep(3000L);
-        return "my";
-    }
 }
