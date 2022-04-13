@@ -1,18 +1,20 @@
 package daisy.springbootgettingstarted;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class HomeController {
 
     @GetMapping("/hello")
-    public String hello() {
+    public String hello() throws InterruptedException {
+        Thread.sleep(5000L);
         return "hello";
     }
 
     @GetMapping("/my")
-    public String my() {
+    public String my() throws InterruptedException {
+        Thread.sleep(3000L);
         return "my";
     }
 }
