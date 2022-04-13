@@ -3,52 +3,34 @@ package daisy.springbootgettingstarted;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.web.client.RestTemplate;
+
+import java.time.Duration;
 
 @Component
 public class RestRunner implements ApplicationRunner {
 
     @Autowired
-    WebClient.Builder builder;
+    RestTemplateBuilder restTemplateBuilder;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        WebClient webClient = builder.build();
+        RestTemplate restTemplate = restTemplateBuilder
+                .setConnectTimeout(Duration.ofMinutes(3))
+                .build();
 
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        Mono<String> helloMono = webClient.get().uri("/hello")
-                .retrieve()
-                .bodyToMono(String.class);
+        String helloResult = restTemplate.getForObject("http://localhost:8080/hello", String.class);
+        System.out.println(helloResult);
+        String myResult = restTemplate.getForObject("http://localhost:8080/my", String.class);
+        System.out.println(myResult);
 
-        helloMono.subscribe(s -> {
-            System.out.println(s);
-
-            if (stopWatch.isRunning()) {
-                stopWatch.stop();
-            }
-
-            System.out.println(stopWatch.prettyPrint());
-            stopWatch.start();
-        });
-
-        Mono<String> myMono = webClient.get().uri("/my")
-                .retrieve()
-                .bodyToMono(String.class);
-
-        myMono.subscribe(s -> {
-            System.out.println(s);
-
-            if (stopWatch.isRunning()) {
-                stopWatch.stop();
-            }
-
-            System.out.println(stopWatch.prettyPrint());
-            stopWatch.start();
-        });
+        stopWatch.stop();
+        System.out.println(stopWatch.prettyPrint());
     }
 }
