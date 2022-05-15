@@ -15,9 +15,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/validation/v2/items")
@@ -28,10 +26,10 @@ public class ValidationItemControllerV2 {
     private final ItemValidator itemValidator;
 
     // @InitBinder는 해당 컨트롤러에만 영향을 준다. 글로벌 설정은 별도로 해야한다.
-//    @InitBinder
-//    public void init(WebDataBinder dataBinder) {
-//        dataBinder.addValidators(itemValidator);
-//    }
+    @InitBinder
+    public void init(WebDataBinder dataBinder) {
+        dataBinder.addValidators(itemValidator);
+    }
 
     @GetMapping
     public String items(Model model) {
