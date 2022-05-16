@@ -13,7 +13,7 @@ public class Item {
     private Long id;
 
     // @NotBlank : 빈값 + 공백만 있는 경우를 허용하지 않는다.
-    @NotBlank
+    @NotBlank(message = "공백은 입력할 수 없습니다.")
     private String itemName;
 
     @NotNull
