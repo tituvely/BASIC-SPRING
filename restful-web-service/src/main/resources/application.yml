@@ -13,6 +13,7 @@ spring:
       password: passw0rd
   jpa:
     show-sql: true
+    defer-datasource-initialization: true
     h2:
       console:
         enabled: true
