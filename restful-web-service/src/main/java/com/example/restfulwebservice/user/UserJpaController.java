@@ -1,5 +1,6 @@
 package com.example.restfulwebservice.user;
 
+import com.example.restfulwebservice.post.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +49,17 @@ public class UserJpaController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping("/users/{id}/posts")
+    public List<Post> retrieveAllPostsByUser(@PathVariable int id) {
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isEmpty()) {
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+
+        return user.get().getPosts();
     }
 
 }
