@@ -13,6 +13,12 @@ public class DecoratorPatternTest {
         client.execute();
     }
 
-
+    @Test
+    void decorator1() {
+        Component realComponent = new RealComponent();
+        Component messageDecorator = new MessageDecorator(realComponent);
+        DecoratorPatternClient client = new DecoratorPatternClient(messageDecorator);
+        client.execute();
+    }
 
 }
